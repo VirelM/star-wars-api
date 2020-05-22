@@ -1,26 +1,29 @@
 import React from 'react';
 
 export default class Search extends React.Component{
-    formsubmit = (person)=>{
-        console.log('hey world');
-        let base_url = 'https://swapi.dev/api/people/?search=';
-        fetch(`${base_url}${person}`,{
-            method: "GET",
-            headers: {"Content-Type": "application/json"}
-        })
-            .then(res=> res.json())
-            .then((resJson)=>this.props.updateState(resJson))
-    }
+   
 
     
     render(){
+        if (this.props.loading) {
+            return <div>Loading...</div>;
+        }
         return(
             <form onSubmit={e=>{
                 e.preventDefault();
                 
-                this.formsubmit(e.target.peopleInput.value)}}>
-                <label htmlFor="peopleInput">Search Characters</label>
+                this.props.formsubmit(e.target.peopleInput.value, e.target.searchOption.value)}}>
+                <label htmlFor="peopleInput">Search within Star Wars</label>
+                <select id="searchOption">
+                    <option value="characters">characters</option>
+                    <option value="planets">planets</option>
+                    <option value="starships">starships</option>
+                    <option value="vehicles">vehicles</option>
+                    <option value="species">species</option>
+                    <option value="films">films</option>
+                </select>
                 <input type="text" id="peopleInput"></input>
+                
                 <button type="submit">Search</button>
             </form>
         )
