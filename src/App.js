@@ -1,26 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
+import Search from './Search'
+import Characters from './Characters'
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      chars:[]
+    };
+  }
+
+  updateState = (resJson)=>{
+    let newchars = [];
+    resJson.results.forEach((char) => {
+      let chars = {
+        name: char.name
+      }
+      newchars.push(chars)
+    });
+    this.setState({
+        chars: newchars
+    })
+  }
+
+  render(){
+    return (
+      <div className="App">
+        <header>
+          <h1>Star Wars Search</h1>
+        </header>
+        <Search updateState={this.updateState}></Search>
+        <Characters chars={this.state.chars}></Characters>
+      </div>
+    )
+  }
 }
 
 export default App;
